@@ -1,0 +1,43 @@
+{% extends 'base1.html' %}
+
+{% block title %}Latest News{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        <label for="category">Choose a category:</label>
+        <select name="category" id="category">
+            <option value="" {% if not category %}selected{% endif %}>None</option>
+            <option value="business" {% if category == "business" %}selected{% endif %}>Business</option>
+            <option value="entertainment" {% if category == "entertainment" %}selected{% endif %}>Entertainment</option>
+            <option value="general" {% if category == "general" %}selected{% endif %}>General</option>
+            <option value="health" {% if category == "health" %}selected{% endif %}>Health</option>
+            <option value="science" {% if category == "science" %}selected{% endif %}>Science</option>
+            <option value="sports" {% if category == "sports" %}selected{% endif %}>Sports</option>
+            <option value="technology" {% if category == "technology" %}selected{% endif %}>Technology</option>
+        </select>
+        <button type="submit">Go</button>
+            <label for="category">Search:</label>
+            <input type="text" name="search_query" placeholder="Search for news">
+            <button type="submit">Go</button>
+    </form>
+    <div class="row">
+        {% for article in article_data %}
+            <div class="col-md-4">
+                <div class="card">
+                    {% if article.img_url %}
+                        <img src="{{ article.img_url }}" class="card-img-top" alt="{{ article.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ article.title }}</h5>
+                        <p class="card-text">{{ article.summary }}</p>
+                        <a href="{{ article.source_url }}" class="btn btn-primary">Read more</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        {{ article.source_name }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

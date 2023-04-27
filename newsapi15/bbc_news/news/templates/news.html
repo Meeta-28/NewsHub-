@@ -1,0 +1,155 @@
+{% extends 'base1.html' %}
+{% load static %}
+
+{% block title %}Latest News - NewsHub{% endblock %}
+
+{% block content %}
+  
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" name="search_query" class="form-control" placeholder="Search for news">
+                    <button type="submit" class="btn btn-primary">Go</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <form method="POST">
+                {% csrf_token %}
+                <label for="category" class="me-3">Choose a category:</label>
+                <select name="category" id="category" class="form-select">
+                    <option value="" {% if not category %}selected{% endif %}>All</option>
+                    <option value="business" {% if category == "business" %}selected{% endif %}>Business</option>
+                    <option value="entertainment" {% if category == "entertainment" %}selected{% endif %}>Entertainment</option>
+                    <option value="general" {% if category == "general" %}selected{% endif %}>General</option>
+                    <option value="health" {% if category == "health" %}selected{% endif %}>Health</option>
+                    <option value="science" {% if category == "science" %}selected{% endif %}>Science</option>
+                    <option value="sports" {% if category == "sports" %}selected{% endif %}>Sports</option>
+                    <option value="technology" {% if category == "technology" %}selected{% endif %}>Technology</option>
+                </select>
+                <button type="submit" class="btn btn-primary ms-3">Go</button>
+            </form>
+        </div>
+    </div>
+    <h2><strong>Top Stories</strong></h2>
+    <div class="sliding-window-container">
+        <div class="sliding-window">
+          {% for article in article_data|slice:":5" %}
+          <div class="slide">
+            <a href="{{ article.source_url }}">
+              {% if article.img_url %}
+              <img src="{{ article.img_url }}" alt="{{ article.title }}">
+              {% endif %}
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="sliding-window-controls">
+          <input type="radio" name="sliding-window" id="sliding-window-1" checked>
+          <label for="sliding-window-1"></label>
+      
+          <input type="radio" name="sliding-window" id="sliding-window-2">
+          <label for="sliding-window-2"></label>
+      
+          <input type="radio" name="sliding-window" id="sliding-window-3">
+          <label for="sliding-window-3"></label>
+          <input type="radio" name="sliding-window" id="sliding-window-4">
+          <label for="sliding-window-4"></label>
+          <input type="radio" name="sliding-window" id="sliding-window-5">
+          <label for="sliding-window-5"></label>
+        </div>
+      </div>
+      
+    <div class="row">
+        {% for article in article_data %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    {% if article.img_url %}
+                        <img src="{{ article.img_url }}" class="card-img-top" alt="{{ article.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ article.title }}</h5>
+                        <p class="card-text">{{ article.summary }}</p>
+                        <a href="{{ article.source_url }}" class="btn btn-primary">Read more</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        {{ article.source_name }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <footer class="bg-light text-center text-lg-start">
+        <div class="container p-4">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">About NewsHub</h5>
+
+                    <p>
+                        NewsHub is a news website that provides the latest news and updates from around the world. We cover a wide range of topics including business, entertainment, general news, health, science, sports, and technology.
+                    </p>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">Contact Us</h5>
+
+                    <ul class="list-unstyled mb-0">
+                        <li>
+                            <a href="#!" class="text-dark">Email: info@newshub.com</a>
+                        </li>
+                        <li>
+                            <a href="#!" class="text-dark">Phone: +1 (123) 456-7890</a>
+                        </li>
+                        <li>
+                            <a href="#!" class="text-dark">Address: 123 Main St, Anytown, USA</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">Follow Us</h5>
+
+                    <ul class="list-unstyled mb-0">
+                        <li>
+                            <a href="#!" class="text-dark"><i class="fab fa-facebook fa-lg me-3"></i>Facebook</a>
+                        </li>
+                        <li>
+                            <a href="#!" class="text-dark"><i class="fab fa-twitter fa-lg me-3"></i>Twitter</a>
+                        </li>
+                        <li>
+                            <a href="#!" class="text-dark"><i class="fab fa-instagram fa-lg me-3"></i>Instagram</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <p>&copy; 2023 NewsHub. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

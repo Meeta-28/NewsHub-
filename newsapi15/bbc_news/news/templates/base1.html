@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}NewsHub{% endblock %}</title>
+    {% block head %}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">NewsHub</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+            </ul>
+        </div>
+        <div class="d-flex justify-content-end mb-3">
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger">Logout</button>
+            </form>
+        </div>
+    </nav>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    {% block script %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {% endblock %}
+    {% block footer %}{% endblock %}
+    <script>
+        const windowWidth = document.querySelector('.sliding-window').offsetWidth;
+        const slides = document.querySelectorAll('.slide');
+        const numSlides = slides.length;
+        let currentSlide = 0;
+    
+        function moveSlides() {
+          document.querySelector('.sliding-window').style.transform = `translateX(-${currentSlide * windowWidth}px)`;
+        }
+    
+        document.querySelectorAll('input[name="sliding-window"]').forEach((radio, index) => {
+          radio.addEventListener('change', () => {
+            currentSlide = index;
+            moveSlides();
+          });
+        });
+    
+        setInterval(() => {
+          currentSlide = (currentSlide + 1) % numSlides;
+          document.querySelector(`#sliding-window-${currentSlide + 1}`).checked = true;
+          moveSlides();
+        }, 5000);
+      </script>
+</body>
+</html>

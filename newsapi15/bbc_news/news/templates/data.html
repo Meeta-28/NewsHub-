@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Monthly Article Counts</h1>
+    <canvas id="myChart"></canvas>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Retrieve the data passed from the view
+        var monthlyCounts = {{ monthly_counts|tojson }};
+
+        // Set up the chart
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: monthlyCounts.map(function(count) { return count[0]; }),
+                datasets: [{
+                    label: 'Monthly Article Counts',
+                    data: monthlyCounts.map(function(count) { return count[1]; }),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+{% endblock %}
+
+
